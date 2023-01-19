@@ -1,5 +1,5 @@
 //import React from 'react';  React.Component
-import { Component } from 'react'; // Тут прописали ввиде деструктирезации (Component)
+import { Component, StrictMode } from 'react'; // Тут прописали ввиде деструктирезации (Component)
 import './App.css';
 
 const Header = () => {
@@ -40,7 +40,9 @@ function Btn() {
 function App() {
 	return (
 		<div className="App">
-			<Header/>
+			<StrictMode>
+				<Header/>
+			</StrictMode>
 			<Field/>
 			<Btn/>
 		</div>

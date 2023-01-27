@@ -46,44 +46,18 @@ class App extends Component {
         });
     }
 
-	onToggleIncrease = (id) => {
-		// 1-й способ
-		/*
-		this.setState(({data}) => {
-			const index = data.findIndex(elem => elem.id === id);
-
-			const old = data[index];
-			const newItem = {...old, increase: !old.increase}; 
-			// {...old} -> получится новый объект
-			// increase: !old.increase -> increase меняет на противоположный
-			const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
-
-			return {
-				data: newArr
-			} 
-		})*/
-
-		// 2-й способ
+	onToggleProp = (id, prop) => {
 		this.setState(({data}) => ({
 			data: data.map(item => {
 				if (item.id === id) {
-					return {...item, increase: !item.increase}
+					return {...item, [prop]: !item[prop]}
 				}
 				return item;
 			})
 		}))
 	}
 
-	onToggleRise = (id) => {
-		this.setState(({data}) => ({
-			data: data.map(item => {
-				if (item.id === id) {
-					return {...item, rise: !item.rise}
-				}
-				return item;
-			})
-		}))
-	}
+	
 
 	render() {
 		const employees = this.state.data.length; // Кол-во сотрудников всего 
@@ -100,8 +74,7 @@ class App extends Component {
 				<EmployeesList 
 					data={this.state.data}
 					onDelete={this.deleteItem} 
-					onToggleIncrease={this.onToggleIncrease}
-					onToggleRise={this.onToggleRise} />
+					onToggleProp={this.onToggleProp} />
 				<EmployeesAddForm onAdd={this.addItem} />
 			</div>
 		);

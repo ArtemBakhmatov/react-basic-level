@@ -22,9 +22,10 @@ class App extends Component {
 
 	deleteItem = (id) => {
 		this.setState(({data}) => {
+			// 1) Способ:
+			/*
 			const index = data.findIndex(elem => elem.id === id);
 			// findIndex -> перебирает объекты, elem -> каждый объект, второй id -> аргумент
-			/* 1) Способ создания нового массива
 			const before = data.slice(0, index);
 			const after = data.slice(index + 1);
 
@@ -33,12 +34,28 @@ class App extends Component {
 			return {
 				data: newArr
 			} */
-			// 2) Способ создания нового массива 
+			// 2) Способ:
 			return {
 				data: data.filter(item => item.id !== id)
 			} 
 		})
 	}
+
+	// Да, пока могут добавляться пустые пользователи. Мы это еще исправим
+    addItem = (name, salary) => {
+        const newItem = {
+            name, 
+            salary,
+            increase: false,
+            id: this.maxId++
+        }
+        this.setState(({data}) => {
+            const newArr = [...data, newItem];
+            return {
+                data: newArr
+            }
+        });
+    }
 
 	render() {
 		return (
@@ -53,7 +70,7 @@ class App extends Component {
 				<EmployeesList 
 					data={this.state.data}
 					onDelete={this.deleteItem} />
-				<EmployeesAddForm/>
+				<EmployeesAddForm onAdd={this.addItem} />
 			</div>
 		);
 	}

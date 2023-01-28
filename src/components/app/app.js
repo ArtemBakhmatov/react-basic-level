@@ -17,7 +17,8 @@ class App extends Component {
 				{name: 'Alex M.', salary: 3000, increase: true, rise: false, id: 2},
 				{name: 'Carl V.', salary: 5000, increase: false, rise: false, id: 3}
 			],
-			term: ''  // Фильтация данных // совпадение с data
+			term: '',  // Фильтация данных // совпадение с data
+			filter: 'all' // Суда записываем выбранный фильтр
 		}
 		this.maxId = 4;
 	}
@@ -71,18 +72,35 @@ class App extends Component {
 		this.setState({term});
 	}
 
+	filterPost = (items, filter) => {
+		switch (filter) {
+			case 'rise':
+				return items.filter(item => item.rise);
+				//return items.filter(item => if (item.rise) return); // можно так писать
+			case 'moreThen1000':
+				return items.filter(item => item.salary > 1000);
+			default:
+				return items;
+		}
+	}
+
+	onFilterSelect = (filter) => {
+		this.setState({filter});
+	}
+
 	render() {
-		const {data, term} = this.state;
+		const {data, term, filter} = this.state;
 		const employees = this.state.data.length; // Кол-во сотрудников всего 
 		const increased = this.state.data.filter(item => item.increase).length; // Кол-во сотр-ов на премию 
-		const visibleData = this.searchEmp(data, term); // выдимые данные // массив
+		const visibleData = this.filterPost(this.searchEmp(data, term), filter); 
+		// visibleData -> тут идет фильтарация по поиску а потом фильтрация по фильтру
 		return (
 			<div className="app">
 				<AppInfo employees={employees} increased={increased} />
 	
 				<div className="search-panel">
 					<SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-					<AppFilter/>
+					<AppFilter filter={filter} onFilterSelect={this.onFilterSelect}/>
 				</div>
 				
 				<EmployeesList 
